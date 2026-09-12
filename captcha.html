@@ -1,50 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify</title>
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+<meta charset="UTF-8">
+<title>Verify You Are Human</title>
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #eef1f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    gap: 20px;
+}
+.captcha-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px 24px;
+    position: fixed;
+    z-index: 10;
+    transition: left 400ms ease, top 400ms ease;
+}
+#resultMsg {
+    font-weight: bold;
+    min-height: 20px;
+}
+button {
+    padding: 8px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%);
+    z-index: 20;
+}
+</style>
 </head>
 <body>
-    <main>
-        <h1>Quick check</h1>
-        <form id="captcha-form">
-            <div id="hcaptcha"></div>
-            <button type="submit">Verify</button>
-            <p id="captcha-status" role="status" aria-live="polite"></p>
-        </form>
-    </main>
 
-    <script>
-        const siteKey = "79a086d4-e5a2-49b4-b0ae-d75a2b28efce";
-        const form = document.getElementById("captcha-form");
-        const status = document.getElementById("captcha-status");
-        let captchaId;
+<div class="captcha-card">
+<div class="h-captcha"
+    data-sitekey="79a086d4-e5a2-49b4-b0ae-d75a2b28efce"
+    data-callback="onCaptchaVerified"></div>
+</div>
 
-        function renderCaptcha() {
-            if (!window.hcaptcha) {
-                window.setTimeout(renderCaptcha, 100);
-                return;
-            }
+<button id="submitBtn">Submit</button>
+<div id="resultMsg"></div>
 
-            captchaId = hcaptcha.render("hcaptcha", {
-                sitekey: siteKey
-            });
+<script>
+const captchaCard = document.querySelector('.captcha-card');
+const submitButton = document.getElementById('submitBtn');
+const resultMsg = document.getElementById('resultMsg');
+const maxMoves = 2;
+let moveCount = 0;
+
+function moveCaptcha() {
+    const cardWidth = captchaCard.offsetWidth;
+    const cardHeight = captchaCard.offsetHeight;
+    const margin = 16;
+    const maxLeft = Math.max(margin, window.innerWidth - cardWidth - margin);
+    const maxTop = Math.max(margin, window.innerHeight - cardHeight - margin);
+    const buttonRect = submitButton.getBoundingClientRect();
+
+    function overlapsButton(left, top) {
+        return left < buttonRect.right + margin &&
+            left + cardWidth > buttonRect.left - margin &&
+            top < buttonRect.bottom + margin &&
+            top + cardHeight > buttonRect.top - margin;
+    }
+
+    for (let attempt = 0; attempt < 100; attempt += 1) {
+        const left = Math.floor(Math.random() * (maxLeft - margin + 1)) + margin;
+        const top = Math.floor(Math.random() * (maxTop - margin + 1)) + margin;
+
+        if (!overlapsButton(left, top)) {
+            captchaCard.style.left = `${left}px`;
+            captchaCard.style.top = `${top}px`;
+            return;
         }
+    }
 
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
+    captchaCard.style.left = `${margin}px`;
+    captchaCard.style.top = `${margin}px`;
+}
 
-            if (!captchaId || !hcaptcha.getResponse(captchaId)) {
-                status.textContent = "Please complete the captcha first.";
-                return;
-            }
+window.onCaptchaVerified = () => {
+    moveCount += 1;
+    resultMsg.style.color = '#080';
+    resultMsg.textContent = `Not Verified.`;
+    moveCaptcha();
 
-            status.textContent = "Captcha completed.";
-        });
+    if (moveCount < maxMoves) {
+        hcaptcha.reset();
+    } else {
+        resultMsg.textContent = 'Verified. You have completed the Easy captcha successfully!';
+    }
+};
 
-        renderCaptcha();
-    </script>
+document.getElementById('submitBtn').addEventListener('click', () => {
+    const token = document.querySelector('textarea[name="h-captcha-response"]')?.value;
+
+    if (!token) {
+        resultMsg.style.color = '#c00';
+        resultMsg.textContent = 'Please complete the captcha first.';
+    }
+});
+</script>
+
 </body>
 </html>
