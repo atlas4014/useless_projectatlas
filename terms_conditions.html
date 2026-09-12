@@ -4,13 +4,25 @@
 <meta charset="UTF-8">
 <title>Terms & Conditions (Definitely Read This)</title>
 <style>
+  :root{
+    --bg:#e9e7e3;
+    --card-bg:#faece4;
+    --card-border:#f3ddd0;
+    --ink:#14120f;
+    --muted:#74787f;
+    --accent-amber:#b8763f;
+    --accent-blue:#52709c;
+    --nav-black:#0d0d0d;
+    --font-serif: Georgia, 'Times New Roman', serif;
+    --font-mono: 'Courier New', ui-monospace, SFMono-Regular, monospace;
+  }
   body {
-    font-family: Georgia, serif;
+    font-family: var(--font-mono);
     min-height: 100vh;
     margin: 0;
     padding: 32px 20px;
-    background: linear-gradient(135deg, #620087, #000000);
-    color: #222;
+    background: var(--bg);
+    color: var(--ink);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,40 +34,55 @@
     padding: 28px 32px;
     overflow-y: auto;
     line-height: 1.6;
-    background: #600f7d;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius: 18px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 20px 50px rgba(20,18,15,0.12);
   }
-  h1 { text-align: center; }
+  h1 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 40px;
+    text-align: center;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
   #scrollBtn {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background: #222;
+    background: var(--nav-black);
     color: #fff;
     border: none;
     border-radius: 50%;
     width: 60px;
     height: 60px;
     font-size: 24px;
+    font-family: var(--font-mono);
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(20,18,15,0.3);
   }
   .placeholder {
-    color: #999;
+    color: var(--muted);
     font-style: italic;
   }
   #checkboxSection {
     margin-top: 60px;
     padding: 20px;
-    border-top: 2px dashed #999;
+    border-top: 2px dashed var(--card-border);
   }
-  label { display: block; margin: 10px 0; }
+  label { display: block; margin: 10px 0; color: var(--ink); }
   #submitBtn {
     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 12px 26px;
+    font-size: 15px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: #fff;
+    background: var(--nav-black);
+    border: none;
+    border-radius: 999px;
     cursor: pointer;
   }
   #submitBtn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -65,7 +92,7 @@
 
 <main class="terms-window">
 
-<h1>Terms & Conditions</h1>
+<h1>Terms &amp; Conditions</h1>
 <p><em>Please scroll down to read the full agreement.</em></p>
 
 <!-- CONTENT PLACEHOLDER: paste real T&C text here later -->

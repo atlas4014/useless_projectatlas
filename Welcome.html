@@ -4,10 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcomepage</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+      :root{
+        --bg:#e9e7e3;
+        --card-bg:#faece4;
+        --card-border:#f3ddd0;
+        --ink:#14120f;
+        --muted:#74787f;
+        --accent-amber:#b8763f;
+        --accent-blue:#52709c;
+        --nav-black:#0d0d0d;
+        --font-serif: Georgia, 'Times New Roman', serif;
+        --font-mono: 'Courier New', ui-monospace, SFMono-Regular, monospace;
+      }
+      html, body{ height:100%; margin:0; }
+      body{
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-mono);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        min-height:100vh;
+        padding: 24px;
+      }
+      .panel{
+        text-align:center;
+        max-width: 640px;
+      }
+      h1{
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-size: clamp(36px, 6vw, 64px);
+        line-height: 1.1;
+        margin: 0 0 28px;
+        color: var(--ink);
+      }
+      h1 span{
+        color: var(--accent-amber);
+        font-style: italic;
+      }
+      a{ text-decoration:none; }
+      button{
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: .02em;
+        color: #fff;
+        background: var(--nav-black);
+        border: none;
+        border-radius: 999px;
+        padding: 14px 32px;
+        cursor: pointer;
+        transition: opacity .15s ease;
+      }
+      button:hover{ opacity:.85; }
+    </style>
 </head>
 <body>
-    <h1>The <span>Very</span> pressable button</h1>
-    <a href=captcha.html"><button>Press it</button></a>
+    <div class="panel">
+      <h1>The <span>Very</span> pressable button</h1>
+      <a href="captcha.html"><button>Press it</button></a>
+    </div>
 </body>
 </html>

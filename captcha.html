@@ -5,9 +5,22 @@
 <title>Verify You Are Human</title>
 <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 <style>
+:root{
+    --bg:#e9e7e3;
+    --card-bg:#faece4;
+    --card-border:#f3ddd0;
+    --ink:#14120f;
+    --muted:#74787f;
+    --accent-amber:#b8763f;
+    --accent-blue:#52709c;
+    --nav-black:#0d0d0d;
+    --font-serif: Georgia, 'Times New Roman', serif;
+    --font-mono: 'Courier New', ui-monospace, SFMono-Regular, monospace;
+}
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #620087, #000000);
+    font-family: var(--font-mono);
+    background: var(--bg);
+    color: var(--ink);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,33 +29,57 @@ body {
     margin: 0;
     gap: 20px;
 }
+.eyebrow{
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: var(--muted);
+}
+.eyebrow b{ color: var(--accent-amber); font-weight:700; }
 .captcha-card {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(20,18,15,0.06);
     padding: 20px 24px;
     position: fixed;
     z-index: 10;
     transition: left 400ms ease, top 400ms ease;
 }
 #resultMsg {
+    font-family: var(--font-mono);
     font-weight: bold;
     min-height: 20px;
+    color: var(--ink);
 }
 button {
-    padding: 8px 20px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    padding: 10px 24px;
     font-size: 15px;
+    letter-spacing: .02em;
+    color: #fff;
+    background: var(--nav-black);
+    border: none;
+    border-radius: 999px;
     cursor: pointer;
     position: fixed;
     left: 50%;
     bottom: 32px;
     transform: translateX(-50%);
     z-index: 20;
+    transition: opacity .15s ease;
 }
+button:hover{ opacity: .85; }
 </style>
 </head>
 <body>
+
+<div class="eyebrow">VERIFY_<b>HUMAN</b></div>
 
 <div class="captcha-card">
 <div class="h-captcha"
