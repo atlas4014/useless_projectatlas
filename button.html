@@ -1,11 +1,434 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DO NOT PRESS</title>
+<style>
+  :root{
+    --hull:#12151c;
+    --hull-2:#1b2029;
+    --panel:#0d0f14;
+    --stripe:#f5b400;
+    --red:#c81e2c;
+    --red-dark:#7a0f18;
+    --red-glow:#ff3b3b;
+    --steel:#5a6270;
+    --text:#dfe3ea;
+    --mono: "Courier New", ui-monospace, monospace;
+    --sans: Verdana, Geneva, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 700px at 50% 20%, #1a2030 0%, #0a0c11 70%);
+    color:var(--text);
+    font-family:var(--sans);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .console{
+    position:relative;
+    width:min(60vw, 280px);
+    aspect-ratio: 4 / 5;
+    background: linear-gradient(180deg, var(--hull-2), var(--hull));
+    border-radius:18px;
+    border:2px solid #2a3140;
+    box-shadow:
+      0 30px 60px rgba(0,0,0,.6),
+      inset 0 0 0 6px #0a0c11,
+      inset 0 0 40px rgba(0,0,0,.5);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:14px 12px;
+    overflow:hidden;
+  }
+
+  .stripes{
+    height:9px;
+    width:100%;
+    background: repeating-linear-gradient(135deg, var(--stripe) 0 14px, #14161b 14px 28px);
+    border-radius:6px;
+    flex:0 0 auto;
+  }
+
+  .label{
+    margin-top:12px;
+    font-family:var(--mono);
+    letter-spacing:.1em;
+    font-size:10px;
+    color:var(--steel);
+    text-align:center;
+  }
+
+  .stage{
+    position:relative;
+    flex:1;
+    width:100%;
+    margin-top:14px;
+    border-radius:14px;
+    background: var(--panel);
+    border:1px solid #232a36;
+    overflow:hidden;
+  }
+
+  .bolt{ position:absolute; width:8px; height:8px; border-radius:50%; background:#333c4a; box-shadow: inset 0 1px 1px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.05); }
+  .bolt.tl{top:10px;left:10px;} .bolt.tr{top:10px;right:10px;}
+  .bolt.bl{bottom:10px;left:10px;} .bolt.br{bottom:10px;right:10px;}
+
+  /* the button + hinged lid */
+  #btnWrap{
+    position:absolute;
+    width:70px;
+    height:70px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    transition: left .18s cubic-bezier(.2,.9,.3,1.4), top .18s cubic-bezier(.2,.9,.3,1.4);
+  }
+
+  .collar{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #3a4150, #14171d 70%);
+    box-shadow: 0 10px 24px rgba(0,0,0,.55), inset 0 0 0 4px #05070a;
+  }
+
+  #button{
+    position:absolute;
+    top:6px; left:6px; right:6px; bottom:6px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    background: radial-gradient(circle at 38% 30%, var(--red-glow), var(--red) 55%, var(--red-dark) 100%);
+    box-shadow:
+      0 4px 0 #4c0810,
+      0 7px 12px rgba(200,30,44,.45),
+      inset 0 -3px 6px rgba(0,0,0,.35),
+      inset 0 3px 6px rgba(255,255,255,.15);
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:7px;
+    letter-spacing:.08em;
+    color:#3a0509;
+    text-shadow: 0 1px 0 rgba(255,255,255,.2);
+  }
+  #button:active{ transform: translateY(2px); box-shadow: 0 2px 0 #4c0810, inset 0 3px 6px rgba(0,0,0,.4); }
+  #button[disabled]{ cursor:not-allowed; filter:grayscale(.5) brightness(.6); }
+
+  .lid{
+    position:absolute;
+    inset:-6px;
+    border-radius:50%;
+    background: linear-gradient(155deg, rgba(180,200,220,.16), rgba(180,200,220,.04) 60%);
+    backdrop-filter: blur(1px);
+    border:1px solid rgba(210,225,240,.35);
+    box-shadow:
+      0 10px 20px rgba(0,0,0,.35),
+      inset 0 10px 14px rgba(255,255,255,.18),
+      inset 0 -8px 12px rgba(0,0,0,.15);
+    transform-origin: 50% 100%;
+    transform: rotateX(0deg);
+    transition: transform .6s cubic-bezier(.5,-0.2,.3,1.3);
+    z-index:5;
+    cursor:pointer;
+  }
+  .lid::before{
+    content:"";
+    position:absolute;
+    top:10%; left:16%;
+    width:30%; height:20%;
+    border-radius:50%;
+    background: rgba(255,255,255,.35);
+    filter: blur(2px);
+    transform: rotate(-25deg);
+  }
+  .lid.open{
+    transform: rotateX(-130deg) translateY(-14px);
+    pointer-events:none;
+  }
+
+  #btnWrap.armed .collar{ box-shadow: 0 10px 24px rgba(255,60,60,.35), inset 0 0 0 4px #05070a; }
+
+  .hint{
+    margin-top:14px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--steel);
+    text-align:center;
+    min-height:1.4em;
+  }
+
+  /* ---- modal / toast ---- */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(4,5,8,.72);
+    display:flex; align-items:center; justify-content:center;
+    z-index:50;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .overlay.show{ opacity:1; pointer-events:auto; }
+
+  .card{
+    width:min(88vw, 320px);
+    background:linear-gradient(180deg,#1c2129,#141821);
+    border:1px solid #2c3341;
+    border-radius:14px;
+    padding:22px 20px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.6);
+    transform:translateY(10px) scale(.97);
+    transition:transform .25s ease;
+  }
+  .overlay.show .card{ transform:translateY(0) scale(1); }
+
+  .card h3{ margin:0 0 6px; font-size:16px; letter-spacing:.03em; }
+  .card p{ margin:0 0 18px; font-size:13px; color:#a7adb8; line-height:1.5; }
+  .card .price{ font-family:var(--mono); font-size:26px; color:var(--stripe); margin-bottom:18px; }
+
+  .pay-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:linear-gradient(180deg,var(--red-glow),var(--red));
+    color:#2a0407;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.04em;
+    cursor:pointer;
+  }
+  .pay-btn:active{ filter:brightness(.9); }
+
+  .cancel{
+    display:block;
+    margin:12px auto 0;
+    background:none;
+    border:none;
+    color:#6a7180;
+    font-size:12px;
+    cursor:pointer;
+    text-decoration:underline;
+  }
+
+  .toast{
+    position:fixed;
+    top:26px; left:50%;
+    transform:translate(-50%,-140%);
+    background:#161a22;
+    border:1px solid #2c3341;
+    padding:14px 20px;
+    border-radius:10px;
+    font-family:var(--mono);
+    font-size:13px;
+    color:#f1c40f;
+    box-shadow:0 12px 30px rgba(0,0,0,.5);
+    transition:transform .4s cubic-bezier(.2,.9,.3,1.4);
+    z-index:60;
+    max-width:80vw;
+    text-align:center;
+  }
+  .toast.show{ transform:translate(-50%,0); }
+
+  .caught{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(4,5,8,.85);
+    z-index:70;
+    opacity:0; pointer-events:none;
+    transition:opacity .25s;
+  }
+  .caught.show{ opacity:1; pointer-events:auto; }
+  .caught .card h3{ color:var(--red-glow); font-size:20px; }
+</style>
 </head>
 <body>
-    
+
+  <div class="console">
+    <div class="stripes"></div>
+    <div class="label">RESTRICTED ACCESS</div>
+
+    <div class="stage" id="stage">
+      <span class="bolt tl"></span><span class="bolt tr"></span>
+      <span class="bolt bl"></span><span class="bolt br"></span>
+
+      <div id="btnWrap">
+        <div class="collar"></div>
+        <button id="button" disabled>DO NOT<br>PRESS</button>
+        <div class="lid" id="lid"></div>
+      </div>
+    </div>
+
+    <div class="hint" id="hint">tap the lock to request access</div>
+  </div>
+
+  <!-- payment modal -->
+  <div class="overlay" id="payOverlay">
+    <div class="card">
+      <h3>Unlock Fee Required</h3>
+      <p>This button is protected by a completely arbitrary paywall for absolutely no reason.</p>
+      <div class="price">₹4999.00</div>
+      <button class="pay-btn" id="payBtn">Pay Now</button>
+      <button class="cancel" id="cancelBtn">nah, never mind</button>
+    </div>
+  </div>
+
+  <!-- caught / never-catchable end state -->
+  <div class="caught" id="caughtOverlay">
+    <div class="card">
+      <h3>Access Denied Forever</h3>
+      <p>The button appreciates your effort. It will not be pressed today. Or any day.</p>
+      <button class="pay-btn" id="againBtn">try again anyway</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  const stage      = document.getElementById('stage');
+  const btnWrap    = document.getElementById('btnWrap');
+  const button     = document.getElementById('button');
+  const lid        = document.getElementById('lid');
+  const hint       = document.getElementById('hint');
+  const payOverlay = document.getElementById('payOverlay');
+  const payBtn     = document.getElementById('payBtn');
+  const cancelBtn  = document.getElementById('cancelBtn');
+  const toast      = document.getElementById('toast');
+  const caughtOverlay = document.getElementById('caughtOverlay');
+  const againBtn   = document.getElementById('againBtn');
+
+  let lidOpen = false;
+  let dodgeCount = 0;
+  const BTN_SIZE = 70;
+
+  function showToast(msg, ms = 2200){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), ms);
+  }
+
+  // 1. click lid -> paywall
+  lid.addEventListener('click', () => {
+    if (lidOpen) return;
+    payOverlay.classList.add('show');
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    payOverlay.classList.remove('show');
+    showToast('smart choice, honestly.');
+  });
+
+  // 2. fake payment -> guilt trip -> open lid
+  payBtn.addEventListener('click', () => {
+    payOverlay.classList.remove('show');
+    setTimeout(() => {
+      showToast("You that desperate---", 2600);
+      setTimeout(openLid, 1400);
+    }, 250);
+  });
+
+  function openLid(){
+    lidOpen = true;
+    lid.classList.add('open');
+    button.disabled = false;
+    btnWrap.classList.add('armed');
+    hint.textContent = 'good luck catching it.';
+  }
+
+  // 3. the button runs away once the lid is open
+  function randomPosInStage(){
+    const rect = stage.getBoundingClientRect();
+    const pad = 8;
+    const maxX = rect.width  - BTN_SIZE - pad;
+    const maxY = rect.height - BTN_SIZE - pad;
+    return {
+      x: pad + Math.random() * Math.max(0, maxX - pad),
+      y: pad + Math.random() * Math.max(0, maxY - pad)
+    };
+  }
+
+  function setButtonPos(x, y){
+    btnWrap.style.left = (x + BTN_SIZE / 2) + 'px';
+    btnWrap.style.top  = (y + BTN_SIZE / 2) + 'px';
+  }
+
+  // start centered in px once we know stage size
+  function centerButton(){
+    const rect = stage.getBoundingClientRect();
+    setButtonPos(rect.width / 2 - BTN_SIZE / 2, rect.height / 2 - BTN_SIZE / 2);
+  }
+  window.addEventListener('load', centerButton);
+  window.addEventListener('resize', () => { if (!lidOpen) centerButton(); });
+
+  function dodge(clientX, clientY){
+    const rect = stage.getBoundingClientRect();
+    let attempts = 0;
+    let pos;
+    do {
+      pos = randomPosInStage();
+      attempts++;
+      const cx = rect.left + pos.x + BTN_SIZE / 2;
+      const cy = rect.top  + pos.y + BTN_SIZE / 2;
+      const d  = Math.hypot(cx - clientX, cy - clientY);
+      if (d > BTN_SIZE * 1.3 || attempts > 8) break;
+    } while (true);
+    setButtonPos(pos.x, pos.y);
+    dodgeCount++;
+    if (dodgeCount === 5)  showToast('nice try.');
+    if (dodgeCount === 15) showToast('it is not going to happen.');
+    if (dodgeCount === 30) showToast('...you are still here?');
+  }
+
+  const DODGE_RADIUS = 48;
+
+  stage.addEventListener('mousemove', (e) => {
+    if (!lidOpen) return;
+    const wrapRect = btnWrap.getBoundingClientRect();
+    const cx = wrapRect.left + wrapRect.width / 2;
+    const cy = wrapRect.top  + wrapRect.height / 2;
+    const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+    if (dist < DODGE_RADIUS) dodge(e.clientX, e.clientY);
+  });
+
+  // touch support: dodge on touchstart/move near the button
+  stage.addEventListener('touchmove', (e) => {
+    if (!lidOpen) return;
+    const t = e.touches[0];
+    if (!t) return;
+    const wrapRect = btnWrap.getBoundingClientRect();
+    const cx = wrapRect.left + wrapRect.width / 2;
+    const cy = wrapRect.top  + wrapRect.height / 2;
+    const dist = Math.hypot(t.clientX - cx, t.clientY - cy);
+    if (dist < DODGE_RADIUS * 1.4) dodge(t.clientX, t.clientY);
+  }, { passive: true });
+
+  // in the astronomically unlikely event it gets pressed
+  button.addEventListener('click', () => {
+    if (!lidOpen || button.disabled) return;
+    caughtOverlay.classList.add('show');
+  });
+
+  againBtn.addEventListener('click', () => {
+    caughtOverlay.classList.remove('show');
+    dodgeCount = 0;
+    centerButtonRandom();
+  });
+
+  function centerButtonRandom(){
+    const pos = randomPosInStage();
+    setButtonPos(pos.x, pos.y);
+  }
+</script>
+
 </body>
 </html>

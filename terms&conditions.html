@@ -265,9 +265,9 @@
 <button id="scrollBtn">↓</button>
 
 <script>
-  // Inverted scroll button: labeled "scroll down" but actually scrolls UP.
+  // Inverted scroll button: labeled "scroll down" but actually jumps back to the start.
   document.getElementById('scrollBtn').addEventListener('click', () => {
-    window.scrollBy({ top: -400, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   // Optional: invert mouse wheel scrolling site-wide (uncomment to enable full chaos)
