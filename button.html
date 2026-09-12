@@ -303,6 +303,8 @@
 
   <div class="toast" id="toast"></div>
 
+  <audio id="teleSound" src="faaah.mp3" preload="auto"></audio>
+
 <script>
   const stage      = document.getElementById('stage');
   const btnWrap    = document.getElementById('btnWrap');
@@ -315,6 +317,12 @@
   const toast      = document.getElementById('toast');
   const caughtOverlay = document.getElementById('caughtOverlay');
   const againBtn   = document.getElementById('againBtn');
+  const teleSound  = document.getElementById('teleSound');
+
+  function playTeleport(){
+    teleSound.currentTime = 0;
+    teleSound.play().catch(() => {});
+  }
 
   let lidOpen = false;
   let dodgeCount = 0;
@@ -393,6 +401,7 @@
       if (d > BTN_SIZE * 1.3 || attempts > 8) break;
     } while (true);
     setButtonPos(pos.x, pos.y);
+    playTeleport();
     dodgeCount++;
     if (dodgeCount === 5)  showToast('nice try.');
     if (dodgeCount === 15) showToast('it is not going to happen.');
