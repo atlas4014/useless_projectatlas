@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify</title>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+</head>
+<body>
+    <main>
+        <h1>Quick check</h1>
+        <form id="captcha-form">
+            <div id="hcaptcha"></div>
+            <button type="submit">Verify</button>
+            <p id="captcha-status" role="status" aria-live="polite"></p>
+        </form>
+    </main>
+
+    <script>
+        const siteKey = "79a086d4-e5a2-49b4-b0ae-d75a2b28efce";
+        const form = document.getElementById("captcha-form");
+        const status = document.getElementById("captcha-status");
+        let captchaId;
+
+        function renderCaptcha() {
+            if (!window.hcaptcha) {
+                window.setTimeout(renderCaptcha, 100);
+                return;
+            }
+
+            captchaId = hcaptcha.render("hcaptcha", {
+                sitekey: siteKey
+            });
+        }
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            if (!captchaId || !hcaptcha.getResponse(captchaId)) {
+                status.textContent = "Please complete the captcha first.";
+                return;
+            }
+
+            status.textContent = "Captcha completed.";
+        });
+
+        renderCaptcha();
+    </script>
+</body>
+</html>
