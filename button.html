@@ -273,7 +273,7 @@
 
       <div id="btnWrap">
         <div class="collar"></div>
-        <button id="button" disabled>DO NOT<br>PRESS</button>
+        <button id="button" disabled>PRESS<br>ME</button>
         <div class="lid" id="lid"></div>
       </div>
     </div>
@@ -335,14 +335,14 @@
 
   cancelBtn.addEventListener('click', () => {
     payOverlay.classList.remove('show');
-    showToast('smart choice, honestly.');
+    showToast('smart choice :)');
   });
 
   // 2. fake payment -> guilt trip -> open lid
   payBtn.addEventListener('click', () => {
     payOverlay.classList.remove('show');
     setTimeout(() => {
-      showToast("You that desperate---", 2600);
+      showToast("You that desperate to press that button?", 2600);
       setTimeout(openLid, 1400);
     }, 250);
   });

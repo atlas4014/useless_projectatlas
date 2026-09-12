@@ -94,7 +94,7 @@ button:hover{ opacity: .85; }
 const captchaCard = document.querySelector('.captcha-card');
 const submitButton = document.getElementById('submitBtn');
 const resultMsg = document.getElementById('resultMsg');
-const maxMoves = 2;
+const maxMoves = 1;
 let moveCount = 0;
 
 function moveCaptcha() {
@@ -137,6 +137,9 @@ window.onCaptchaVerified = () => {
         hcaptcha.reset();
     } else {
         resultMsg.textContent = 'Verified. You have completed the Easy captcha successfully!';
+        window.setTimeout(() => {
+            window.location.href = 'terms_conditions.html';
+        }, 700);
     }
 };
 
