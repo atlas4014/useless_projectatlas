@@ -2,23 +2,22 @@
 
 
 
-# [Project Name] 🎯
+# The VERY Pressable Button🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Flat-Tires
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: [Name] - Saintgits College of engineering
+
 
 ### Project Description
-[2-3 lines about what your project does]
+A Ridiculous Websites which irritates the user
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+To Improve Human Patience and Tolerance
 
 ### The Solution (that nobody asked for)
 [How are you solving it? Keep it fun!]
@@ -85,13 +84,6 @@ For Hardware:
 [Add your demo video link here]
 *Explain what the video demonstrates*
 
-# Additional Demos
-[Add any extra demo materials/links]
-
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
