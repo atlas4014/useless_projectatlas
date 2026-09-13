@@ -408,9 +408,11 @@
     showToast._t = setTimeout(() => toast.classList.remove('show'), ms);
   }
 
-  // 1. click lid -> paywall
+  // 1. click lid -> paywall (only ever shown once)
+  let paywallShown = false;
   lid.addEventListener('click', () => {
-    if (lidOpen) return;
+    if (lidOpen || paywallShown) return;
+    paywallShown = true;
     payOverlay.classList.add('show');
   });
 
@@ -479,12 +481,12 @@
     if (dodgeCount === 5)  showToast('nice try.');
     if (dodgeCount === ACHIEVEMENT_AT && !achievementShown){
       achievementShown = true;
-      showAchievement('Achievement Get!', 'Fatuous Button', 5);
+      showAchievement('Achievement Get!', 'Fatuous');
       playFinalAchievementSound();
     }
     if (dodgeCount === ACHIEVEMENT_AT_30 && !achievementShown30){
       achievementShown30 = true;
-      showAchievement('Cookie!', 'for coming this far ;)', 7);
+      showAchievement('Have a Cookie!', 'for coming this far ;)', 7);
     }
     if (dodgeCount === ACHIEVEMENT_AT_60 && !achievementShown60){
       achievementShown60 = true;
@@ -535,8 +537,8 @@
 
   againBtn.addEventListener('click', () => {
     caughtOverlay.classList.remove('show');
+    if (frozen) return; // stay centered and stopped — don't restart the dodge
     dodgeCount = 0;
-    frozen = false;
     centerButtonRandom();
   });
 
