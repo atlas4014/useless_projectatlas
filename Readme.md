@@ -44,7 +44,7 @@ For Software:
 
 # Screenshots (Add at least 3)
 <img width="1901" height="1078" alt="homepage" src="https://github.com/user-attachments/assets/b4360123-506b-41ba-9b59-980243fa6661" />
-<img width="1126" height="2730" alt="hCaptcha Gate Flow to-2026-09-13-042651" src="https://github.com/user-attachments/assets/b6c93bc8-91e0-4d37-9397-590897e3b50c" />
+
 
 The Starting Page
 
@@ -64,7 +64,7 @@ The Red Button
 
 
 # Diagrams
-<img width="1126" height="2730" alt="hCaptcha Gate Flow to-2026-09-13-042651" src="https://github.com/user-attachments/assets/4b50799e-7da7-4b61-a6c5-59a4bd295586" />
+<img width="400" height="auto" alt="hCaptcha Gate Flow to-2026-09-13-042651" src="https://github.com/user-attachments/assets/4b50799e-7da7-4b61-a6c5-59a4bd295586" />
 Simplified Workflow
 
 
