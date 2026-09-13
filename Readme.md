@@ -42,7 +42,7 @@ xdg-open Welcome.html
 ### Project Documentation
 For Software:
 
-# Screenshots (Add at least 3)
+# Screenshots
 <img width="1901" height="1078" alt="homepage" src="https://github.com/user-attachments/assets/b4360123-506b-41ba-9b59-980243fa6661" />
 
 
