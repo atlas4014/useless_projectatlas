@@ -308,9 +308,9 @@
   <!-- caught / never-catchable end state -->
   <div class="caught" id="caughtOverlay">
     <div class="card">
-      <h3>Access Denied Forever</h3>
-      <p>The button appreciates your effort. It will not be pressed today. Or any day.</p>
-      <button class="pay-btn" id="againBtn">try again anyway</button>
+      <h3>Button Under Maintenance</h3>
+      <p>Sorry, this button is currently out of service. Please try again later.</p>
+      <button class="pay-btn" id="againBtn">okay</button>
     </div>
   </div>
 
@@ -322,6 +322,7 @@
 
   <audio id="teleSound" src="faaah.mp3" preload="auto"></audio>
   <audio id="achieveSound" src="levelup.mp3" preload="auto"></audio>
+  <audio id="achieveSound60" src="challenge.mp3" preload="auto"></audio>
 
 <script>
   const stage      = document.getElementById('stage');
@@ -345,12 +346,24 @@
   let lidOpen = false;
   let dodgeCount = 0;
   let achievementShown = false;
+  let achievementShown30 = false;
+  let achievementShown60 = false;
+  let frozen = false;
   const BTN_SIZE = 70;
   const ACHIEVEMENT_AT = 10; // number of dodges before achievement pops
+  const ACHIEVEMENT_AT_30 = 30; // cookie achievement
+  const ACHIEVEMENT_AT_60 = 60; // second achievement, different sound
+  const FREEZE_AT = 60; // button stops moving and centers here
 
-  const achievement    = document.getElementById('achievement');
-  const achievementImg = document.getElementById('achievementImg');
-  const achieveSound   = document.getElementById('achieveSound');
+  const achievement      = document.getElementById('achievement');
+  const achievementImg   = document.getElementById('achievementImg');
+  const achieveSound     = document.getElementById('achieveSound');
+  const achieveSound60   = document.getElementById('achieveSound60');
+
+  function playAchieveSound60(){
+    achieveSound60.currentTime = 0;
+    achieveSound60.play().catch(() => {});
+  }
 
   function achievementUrl(icon, line1, line2){
     const enc = s => encodeURIComponent(s).replace(/%20/g, '+');
@@ -364,6 +377,28 @@
     achieveSound.play().catch(() => {});
     clearTimeout(showAchievement._t);
     showAchievement._t = setTimeout(() => achievement.classList.remove('show'), ms);
+  }
+
+  function playFinalAchievementSound(){
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99];
+    const startTime = audioContext.currentTime;
+
+    notes.forEach((frequency, index) => {
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      const noteStart = startTime + index * 0.16;
+
+      oscillator.type = 'sine';
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(0.0001, noteStart);
+      gain.gain.exponentialRampToValueAtTime(0.18, noteStart + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + 0.36);
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start(noteStart);
+      oscillator.stop(noteStart + 0.38);
+    });
   }
 
   function showToast(msg, ms = 2200){
@@ -444,16 +479,35 @@
     if (dodgeCount === 5)  showToast('nice try.');
     if (dodgeCount === ACHIEVEMENT_AT && !achievementShown){
       achievementShown = true;
-      showAchievement('Achievement Get!', 'Patience Is A Virtue');
+      showAchievement('Achievement Get!', 'Fatuous Button', 5);
+      playFinalAchievementSound();
+    }
+    if (dodgeCount === ACHIEVEMENT_AT_30 && !achievementShown30){
+      achievementShown30 = true;
+      showAchievement('Cookie!', 'for coming this far ;)', 7);
+    }
+    if (dodgeCount === ACHIEVEMENT_AT_60 && !achievementShown60){
+      achievementShown60 = true;
+      // icon 24 is a placeholder — tell me the exact skinmc icon # if you have one in mind
+      achievementImg.src = achievementUrl(24, 'The End', "There's Nothing Left to Press");
+      achievement.classList.add('show');
+      playAchieveSound60();
+      clearTimeout(showAchievement._t);
+      showAchievement._t = setTimeout(() => achievement.classList.remove('show'), 3200);
     }
     if (dodgeCount === 15) showToast('it is not going to happen.');
     if (dodgeCount === 30) showToast('...you are still here?');
+    if (dodgeCount >= FREEZE_AT && !frozen){
+      frozen = true;
+      centerButton();
+      hint.textContent = "it's given up. go ahead, press it.";
+    }
   }
 
   const DODGE_RADIUS = 48;
 
   stage.addEventListener('mousemove', (e) => {
-    if (!lidOpen) return;
+    if (!lidOpen || frozen) return;
     const wrapRect = btnWrap.getBoundingClientRect();
     const cx = wrapRect.left + wrapRect.width / 2;
     const cy = wrapRect.top  + wrapRect.height / 2;
@@ -463,7 +517,7 @@
 
   // touch support: dodge on touchstart/move near the button
   stage.addEventListener('touchmove', (e) => {
-    if (!lidOpen) return;
+    if (!lidOpen || frozen) return;
     const t = e.touches[0];
     if (!t) return;
     const wrapRect = btnWrap.getBoundingClientRect();
@@ -482,6 +536,7 @@
   againBtn.addEventListener('click', () => {
     caughtOverlay.classList.remove('show');
     dodgeCount = 0;
+    frozen = false;
     centerButtonRandom();
   });
 
@@ -489,6 +544,7 @@
     const pos = randomPosInStage();
     setButtonPos(pos.x, pos.y);
   }
+  console.log(dodgeCount);
 </script>
 
 </body>
