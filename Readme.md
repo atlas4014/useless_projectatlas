@@ -65,6 +65,7 @@ The Red Button
 
 # Diagrams
 <img width="400" height="auto" alt="hCaptcha Gate Flow to-2026-09-13-042651" src="https://github.com/user-attachments/assets/4b50799e-7da7-4b61-a6c5-59a4bd295586" />
+
 Simplified Workflow
 
 
