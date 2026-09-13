@@ -43,42 +43,35 @@ xdg-open Welcome.html
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+<img width="1901" height="1078" alt="homepage" src="https://github.com/user-attachments/assets/b4360123-506b-41ba-9b59-980243fa6661" />
+<img width="1126" height="2730" alt="hCaptcha Gate Flow to-2026-09-13-042651" src="https://github.com/user-attachments/assets/b6c93bc8-91e0-4d37-9397-590897e3b50c" />
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+The Starting Page
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+<img width="1917" height="1077" alt="hCaptcha" src="https://github.com/user-attachments/assets/6b14f85d-9cc3-4ee1-932b-bbf86f12203b" />
+
+Captcha
+
+<img width="1917" height="1078" alt="TandC" src="https://github.com/user-attachments/assets/c5ef46a9-9384-4ff5-9765-9b40fa1af0d1" />
+
+terms and conditions
+
+<img width="1917" height="1077" alt="TheButton" src="https://github.com/user-attachments/assets/aee30d1d-78a1-4f05-8b92-125ab260befd" />
+
+The Red Button
+
+
+
 
 # Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
+<img width="1126" height="2730" alt="hCaptcha Gate Flow to-2026-09-13-042651" src="https://github.com/user-attachments/assets/4b50799e-7da7-4b61-a6c5-59a4bd295586" />
+Simplified Workflow
 
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
+(https://drive.google.com/file/d/17uOxEojkdHQ719CqWaDPsUL3-2-7e2je/view?usp=sharing)
+Demonstrates the working of thw website
 
 
 ---
