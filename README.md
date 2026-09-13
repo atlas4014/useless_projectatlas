@@ -10,7 +10,7 @@
 
 
 ### Team Members
-- Team Lead: [Name] - Saintgits College of engineering
+- Team Lead: Aditya Binil - Saintgits College of engineering
 
 
 ### Project Description
